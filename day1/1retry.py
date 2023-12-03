@@ -1,9 +1,6 @@
-import re
 from functools import reduce
 
-
-
-
+# Just a map of the values
 mapping = {
     "one": "1",
     "two": "2",
@@ -28,25 +25,21 @@ mapping = {
 def getFirstMatch(string):
     lowest = 1000
     value = None
-    for item in mapping.keys():
+    for item in mapping.keys(): # Iterate through mapping above
         index = string.find(item)
-        
-        if index > -1 and index < lowest:
-            # print("IF TRUE", index, value)
+        if index > -1 and index < lowest: # If it's found (index > -1) and lower than the last found (stroed in lowest)
             lowest = index
-            # print("LOWEST", lowest)
             value = mapping[item]
 
     if lowest == 1000:
         raise Exception('this cant happen firstmatch')
-    return value
+    return value # return the stored value (stuck it there for easy keeping)
 
 def getLastMatch(string):
     lowest = 1000
     value = None
     for item in mapping.keys():
-        index = string[::-1].find(item[::-1])
-        print 
+        index = string[::-1].find(item[::-1]) # Same as above, but flip the strings using slicing
         if index > -1 and index < lowest:
             lowest = index
             value = mapping[item]
@@ -55,27 +48,15 @@ def getLastMatch(string):
     return value
 
 def getCalibrationValue(previousValue, string):
-    cleanString = "".join(string)
-    
-
-    firstMatch = getFirstMatch(cleanString)
-    
-
-    lastMatch = getLastMatch(cleanString)
-    
-    print(int(firstMatch + lastMatch))
-
+    firstMatch = getFirstMatch(string)
+    lastMatch = getLastMatch(string)
     return int(firstMatch + lastMatch) + previousValue
-    
-
-
 
 def main():
     input = open('1.txt').read()
+    result = reduce(getCalibrationValue, input.splitlines(), 0) # feed each line into a reduce, with starting value 0
 
-    blah = reduce(getCalibrationValue, input.splitlines(), 0)
-
-    print(blah)
+    print("YOUR RESULT IS:", result)
     
 
 if __name__ == "__main__":
